@@ -56,7 +56,8 @@ function revealSection(entries, observer) {
 
 const sectionObserver = new IntersectionObserver(revealSection, {
     root: null,
-    threshold: 0,
+    threshold: 0.1,
+    rootMargin: "200px",
 });
 
 allSections.forEach((section) => {
@@ -204,3 +205,16 @@ document.addEventListener("keydown", (e) => {
     e.key === "ArrowRight" && nextSlide();
 });
 
+
+/*----------------- tab content -----------------*/
+tabsContainer.addEventListener("click", function (e) {
+    const btn = e.target.closest(".operations__tab");
+
+    if (!btn) return;
+
+    tabs.forEach((tab) => tab.classList.remove("operations__tab--active"));
+    tabsContent.forEach((content) => content.classList.remove("operations__content--active"));
+
+    btn.classList.add("operations__tab--active");
+    document.querySelector(`.operations__content--${btn.dataset.tab}`).classList.add("operations__content--active");
+});
