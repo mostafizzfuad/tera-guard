@@ -14,6 +14,7 @@ const tabs = document.querySelectorAll(".operations__tab");
 const tabsContent = document.querySelectorAll(".operations__content");
 const cookieBody = document.querySelector(".cookie");
 const cookieCloseBtn = document.querySelector(".cookie__close");
+const imgTargets = document.querySelectorAll("img[data-src]");
 const slides = document.querySelectorAll(".slide");
 const btnLeft = document.querySelector(".slider__btn--left");
 const btnRight = document.querySelector(".slider__btn--right");
@@ -97,7 +98,46 @@ navLinks.addEventListener("click", function (e) {
     }
 });
 
-// button scrolling
+// learn more button scrolling
 btnScrollTo.addEventListener("click", () => {
     section1.scrollIntoView({ behavior: "smooth" });
 });
+
+
+/*----------------- toggle navbar -----------------*/
+const toggleBtn = document.querySelector(".nav__toggle");
+
+toggleBtn.addEventListener("click", function () {
+    if (navLinks.classList.contains("nav__open")) {
+        navLinks.classList.remove("nav__open");
+        document.querySelector("html").style.overflowY = "visible";
+    } else {
+        navLinks.classList.add("nav__open");
+        document.querySelector("html").style.overflowY = "hidden";
+    }
+});
+
+navLinks.addEventListener("click", () => {
+    navLinks.classList.contains("nav__open") && navLinks.classList.remove("nav__open");
+    document.querySelector("html").style.overflowY = "visible";
+});
+
+
+/*----------------- lazy loading -----------------*/
+const loadImg = function (entries, observer) {
+    const entry = entries[0];
+    if (!entry.isIntersecting) return;
+    entry.target.src = entry.target.dataset.src;
+    entry.target.addEventListener("load", function () {
+        entry.target.classList.remove("lazy-img");
+    });
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+    root: null,
+    threshold: 0,
+    rootMargin: "252px",
+});
+
+imgTargets.forEach((img) => imgObserver.observe(img));
+
